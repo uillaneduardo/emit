@@ -128,7 +128,8 @@ Quando a operação for uma emissão de laudo, a transação deve estabelecer o 
 
 Após a emissão de um laudo:
 
-1. a avaliação fica protegida contra edição normal;
+1. a avaliação mantém seu estado técnico e recebe um marco de proteção contra edição normal;
+2. o bloqueio deve ser tratado separadamente do status da avaliação;
 2. uma operação explícita de reabertura deve ser executada antes de qualquer alteração;
 3. a reabertura deve ser autorizada pelo mecanismo de acesso do EMIT;
 4. reabertura e alterações posteriores geram eventos;
