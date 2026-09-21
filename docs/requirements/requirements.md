@@ -49,6 +49,7 @@
 - RF-045 Após a emissão de um laudo, bloquear a edição normal da avaliação.
 - RF-046 Exigir uma ação explícita de reabertura para alterar uma avaliação que já originou um laudo.
 - RF-047 Registrar na timeline a reabertura e as alterações posteriores.
+- RF-049 Exigir um motivo informado pelo usuário em toda reabertura de avaliação que já possua laudo emitido, independentemente do perfil autorizado.
 - RF-048 Uma alteração posterior nunca deve modificar o conteúdo de um laudo já emitido.
 
 ## 5. Estrutura configurável
