@@ -199,6 +199,7 @@ Exemplos:
 - laudo emitido;
 - avaliação reaberta;
 - alteração após emissão;
+- motivo informado na reabertura;
 - novo laudo emitido;
 - acesso público revogado.
 
