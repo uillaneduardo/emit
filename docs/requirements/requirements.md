@@ -38,6 +38,9 @@
 - RF-038 Permitir adicionar evidências durante qualquer etapa pertinente da avaliação.
 - RF-039 Registrar data/hora de criação, alterações e conclusão.
 - RF-040 Permitir reabrir uma avaliação concluída conforme as regras de integridade definidas neste documento.
+- RF-041-A A avaliação deve possuir somente os estados `DRAFT`, `IN_PROGRESS`, `COMPLETED` e `CANCELLED`.
+- RF-041-B A emissão de laudo não deve criar um estado adicional da avaliação; ela deve criar um marco de integridade e bloquear a edição normal.
+- RF-041-C A reabertura deve ser tratada como uma operação/evento, retornando a avaliação à condição editável, e não como um estado permanente.
 - RF-041 Preservar o estado e os dados relevantes da avaliação ao longo do tempo.
 - RF-042 Possuir um campo textual opcional para o objetivo/contexto da avaliação.
 - RF-043 O objetivo deve ser texto livre e não deve exigir cadastro de entidade, enum ou classificação própria.
