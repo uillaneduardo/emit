@@ -1,0 +1,34 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Builds
+.next/
+out/
+dist/
+coverage/
+
+# Prisma local DB
+prisma/*.db
+prisma/*.db-journal
+
+# Runtime
+uploads/
+storage/
+tmp/
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Private certificates
+*.key
+*.pem
