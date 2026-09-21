@@ -118,3 +118,70 @@ Template
 Produção: Docker Engine, Docker Compose, volumes persistentes para PostgreSQL e MinIO e publicação através do Cloudflare. O `.env` pertence ao ambiente de implantação e não ao repositório.
 
 PostgreSQL e MinIO não devem ser publicados diretamente na Internet. O acesso externo deve ocorrer somente pelos serviços necessários da aplicação/reverse proxy.
+
+
+## Bootstrap e configuração inicial
+
+A instalação possui um estado persistente de inicialização. Na primeira execução, quando ainda não houver configuração concluída, a aplicação deve direcionar o usuário para o assistente de configuração inicial.
+
+O assistente configura:
+
+1. empresa emissora;
+2. endereço e telefone;
+3. Administrador inicial;
+4. Técnico inicial opcional;
+5. templates iniciais ou configuração limpa;
+6. domínio público canônico.
+
+O bootstrap deve ser executado de forma transacional. Após concluído, as rotas normais da aplicação ficam disponíveis.
+
+A configuração persistida é distinta do `.env`: o ambiente fornece infraestrutura e valores de bootstrap; o banco guarda configurações funcionais da instalação.
+
+## Exportação/importação de templates
+
+Templates devem possuir um formato de intercâmbio próprio do EMIT. Não utilizar dump de tabelas ou dados específicos do Prisma/PostgreSQL como formato de exportação.
+
+O pacote deve conter um envelope com pelo menos:
+
+```text
+format
+formatVersion
+product
+systemVersion
+exportedAt
+templates
+metadata
+```
+
+A importação deve verificar o `formatVersion` antes do conteúdo e depois avaliar a compatibilidade com a versão do sistema indicada em `systemVersion`.
+
+A compatibilidade deve ser baseada em regras explícitas de versão. Quando necessário, uma versão futura poderá implementar migradores:
+
+```text
+package v1 -> importer v2 -> migration -> internal model
+```
+
+O processo de importação deve ser precedido por validação/dry-run e confirmação do Administrador. Conflitos não devem ser resolvidos por sobrescrita silenciosa.
+
+## Domínio público da instalação
+
+O domínio público da instalação é uma configuração funcional persistida no banco.
+
+Exemplo:
+
+```text
+https://emit.dominio.com.br
+```
+
+Ele deve ser utilizado por toda a aplicação na geração de URLs absolutas, incluindo:
+
+- links de navegação que necessitem de URL absoluta;
+- links públicos de avaliações/laudos;
+- QR Codes;
+- canonical URLs;
+- Open Graph/metadados;
+- links enviados por notificações futuras.
+
+A variável `PUBLIC_BASE_URL` pode ser mantida para bootstrap, fallback de instalação ainda não configurada ou ambientes de desenvolvimento, mas não deve ser a única fonte da URL pública depois que a instalação estiver configurada.
+
+A aplicação deve validar o domínio configurado e não deve confiar cegamente no cabeçalho HTTP `Host` para construir URLs.
