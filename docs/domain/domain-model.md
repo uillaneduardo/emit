@@ -304,7 +304,7 @@ Pode armazenar:
 
 ## Estado da avaliação
 
-Estados iniciais sugeridos:
+A avaliação deve manter um conjunto pequeno de estados:
 
 ```text
 DRAFT
@@ -314,18 +314,24 @@ IN_PROGRESS
   |
   v
 COMPLETED
+
+DRAFT / IN_PROGRESS / COMPLETED
   |
-  +--> REPORT_ISSUED
-  |
-  +--> REOPENED
-           |
-           v
-       IN_PROGRESS
+  +--> CANCELLED
 ```
 
-`CANCELLED` pode existir como estado terminal conforme as regras de negócio.
+Significado dos estados:
 
-A emissão do laudo não deve apagar ou substituir o estado técnico da avaliação. Ela cria um marco documental e de integridade.
+- `DRAFT`: avaliação criada, ainda não iniciada ou ainda em preparação.
+- `IN_PROGRESS`: avaliação em execução ou sendo preenchida progressivamente.
+- `COMPLETED`: trabalho técnico concluído e apto a originar um laudo.
+- `CANCELLED`: avaliação encerrada sem conclusão ou sem continuidade.
+
+A emissão do laudo **não é um estado da avaliação**. Ela cria um marco documental e de integridade por meio do laudo/versionamento.
+
+Também não existe um estado permanente `REOPENED`. A reabertura é uma operação explícita registrada na timeline que devolve a avaliação à condição editável, normalmente `IN_PROGRESS`.
+
+O bloqueio após emissão deve ser representado separadamente do status, por exemplo por um atributo de proteção como `lockedAt`. Assim, uma avaliação pode permanecer `COMPLETED` e estar bloqueada porque já possui um laudo emitido.
 
 ## Regra de bloqueio após emissão
 
