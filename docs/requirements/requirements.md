@@ -133,6 +133,7 @@
 - RF-128 A escolha de templates iniciais deve ser registrada na configuração da instalação.
 - RF-129 O assistente deve impedir a criação de uma segunda configuração inicial concorrente.
 - RF-130 A instalação somente deve ser considerada inicializada após a conclusão consistente de todas as etapas obrigatórias.
+- RF-131 O assistente inicial deve permitir configurar se Técnicos poderão reabrir avaliações com laudo emitido ou se a ação ficará restrita aos Administradores.
 
 ## 12. Exportação e importação de templates
 
