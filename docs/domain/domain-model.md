@@ -11,38 +11,61 @@ A avaliação concentra o estado atual do trabalho e referencia o histórico nec
 ## Modelo conceitual
 
 ```text
-Company
-  +-- User
-       +-- ADMINISTRATOR
-       +-- TECHNICIAN
+Installation
   |
-  +-- Requester
-  |     +-- Person
-  |     +-- Organization
-  |
-  +-- Equipment
-  |     +-- Category
-  |     +-- Model
-  |     +-- Component
-  |
-  +-- Evaluation
-        +-- Requester
-        +-- Equipment
-        +-- Technician
-        +-- TemplateVersion
-        +-- FieldResponse
-        +-- TestResult
-        +-- Attachment
-        +-- EvaluationEvent
-        +-- PublicAccess
-        +-- WorkOrderReference (opcional)
+  +-- Company
+       +-- User
+       |    +-- ADMINISTRATOR
+       |    +-- TECHNICIAN
+       |
+       +-- Requester
+       |     +-- Person
+       |     +-- Organization
+       |
+       +-- Equipment
+       |     +-- Category
+       |     +-- Model
+       |     +-- Component
+       |
+       +-- Evaluation
+             +-- Requester
+             +-- Equipment
+             +-- Technician
+             +-- TemplateVersion
+             +-- Objective (texto opcional)
+             +-- FieldResponse
+             +-- TestResult
+             +-- Attachment
+             +-- EvaluationEvent
+             +-- Report / Laudo
+             |     +-- ReportVersion
+             |           +-- Snapshot
+             |           +-- PublicAccess
+             |           +-- PDF
+             |           +-- QR Code
+             |
+             +-- WorkOrderReference (opcional)
 ```
 
 ## Entidades
 
+### Installation
+
+Representa a configuração persistente de uma instalação do EMIT.
+
+Uma instalação possui uma única configuração inicial e deve conhecer, no mínimo:
+
+- status de inicialização;
+- versão do sistema que criou/atualizou a configuração;
+- empresa emissora dos laudos;
+- domínio público canônico;
+- preferências iniciais de templates.
+
+A configuração de instalação não deve ser confundida com a configuração de ambiente do Docker.
+
 ### Company
 
-Tenant da aplicação.
+Tenant da aplicação e empresa emissora dos laudos.
 
 Responsável pelo isolamento dos dados de usuários, solicitantes, equipamentos, avaliações e configurações.
 
@@ -99,9 +122,9 @@ Representa uma avaliação técnica realizada sobre um equipamento para um solic
 A avaliação possui:
 
 - status;
-- tipo;
-- técnico responsável;
 - template/versionamento utilizado;
+- técnico responsável;
+- objetivo opcional em texto livre;
 - respostas;
 - testes;
 - observações;
@@ -109,9 +132,9 @@ A avaliação possui:
 - conclusão;
 - timestamps;
 - histórico de alterações;
-- acesso público, quando publicado.
+- laudos emitidos.
 
-Uma avaliação deve poder existir sem OS.
+O objetivo é **semântico**, não uma entidade estruturada. O sistema não precisa manter uma lista fechada de objetivos. O técnico pode escrever, por exemplo, "estado de entrada", "estado de saída", "diagnóstico para orçamento" ou outro contexto adequado.
 
 ### Template
 
@@ -172,7 +195,10 @@ Exemplos:
 - observação alterada;
 - status alterado;
 - avaliação concluída;
-- laudo publicado;
+- laudo emitido;
+- avaliação reaberta;
+- alteração após emissão;
+- novo laudo emitido;
 - acesso público revogado.
 
 O evento deve registrar, no mínimo:
@@ -185,11 +211,83 @@ O evento deve registrar, no mínimo:
 - valor anterior e/ou novo valor quando necessário;
 - metadados adicionais.
 
+Eventos são append-only no fluxo normal da aplicação.
+
+### Report / Laudo
+
+Representação final e publicável de uma avaliação.
+
+O laudo não deve ser entendido apenas como uma tela derivada do estado atual da avaliação. Uma emissão cria um registro próprio que preserva a representação documental daquele momento.
+
+O laudo deve apresentar, conforme aplicável:
+
+- empresa emissora;
+- solicitante;
+- equipamento;
+- objetivo da avaliação;
+- respostas, testes, observações e conclusão;
+- técnico responsável;
+- local;
+- data e hora de emissão;
+- local para assinatura;
+- identificador do documento;
+- QR Code e endereço de consulta.
+
+Uma avaliação pode existir sem laudo, especialmente enquanto estiver em rascunho ou em andamento.
+
+### ReportVersion
+
+Cada emissão do laudo corresponde a uma versão.
+
+Exemplo:
+
+```text
+Evaluation #123
+   |
+   +-- ReportVersion 1
+   |      +-- snapshot do conteúdo emitido
+   |      +-- PDF v1
+   |      +-- PublicAccess v1
+   |
+   +-- ReportVersion 2
+          +-- snapshot após reabertura
+          +-- PDF v2
+          +-- PublicAccess v2
+```
+
+Uma versão emitida é **imutável**.
+
+A versão deve preservar o snapshot dos dados utilizados na emissão, incluindo a representação necessária para reconstruir o documento sem depender do estado atual da avaliação.
+
+### Snapshot
+
+Representação congelada dos dados relevantes da avaliação no momento da emissão do laudo.
+
+O snapshot deve ser suficiente para que uma versão histórica continue apresentando o conteúdo que foi efetivamente emitido, mesmo que a avaliação seja posteriormente reaberta e alterada.
+
+O formato exato do snapshot será definido na implementação. Ele não deve ser confundido com um dump do banco.
+
 ### PublicAccess
 
-Controle de publicação de uma avaliação/laudo.
+Controle de publicação de uma **versão específica do laudo**.
 
-Possui token público aleatório, status de publicação, possibilidade de expiração/revogação e regras de visibilidade.
+Possui, no mínimo:
+
+- token público aleatório e não enumerável;
+- status;
+- possibilidade de expiração/revogação;
+- regras de visibilidade;
+- referência à versão do laudo publicada.
+
+A URL pública deve apontar para a versão do documento, não para o estado mutável atual da avaliação.
+
+O QR Code deve carregar somente a URL/token de consulta. Não deve carregar os dados do laudo diretamente.
+
+### PDF
+
+O PDF é uma representação derivada da versão imutável do laudo.
+
+Se for regenerado tecnicamente, deve continuar sendo derivado do mesmo snapshot. O conteúdo documental não pode acompanhar alterações posteriores da avaliação.
 
 ### WorkOrderReference
 
@@ -217,13 +315,52 @@ IN_PROGRESS
   v
 COMPLETED
   |
-  +--> REVIEWED / REOPENED (se necessário)
+  +--> REPORT_ISSUED
   |
-  v
-CANCELLED
+  +--> REOPENED
+           |
+           v
+       IN_PROGRESS
 ```
 
-O fluxo exato deve ser definido antes da implementação do domínio.
+`CANCELLED` pode existir como estado terminal conforme as regras de negócio.
+
+A emissão do laudo não deve apagar ou substituir o estado técnico da avaliação. Ela cria um marco documental e de integridade.
+
+## Regra de bloqueio após emissão
+
+Após a emissão de qualquer laudo para uma avaliação:
+
+1. a avaliação entra em estado protegido contra edição normal;
+2. ações de edição comuns devem ser recusadas pela camada de aplicação;
+3. uma alteração exige uma operação explícita de reabertura;
+4. a reabertura deve exigir autenticação/autorização compatível com o perfil e a política definida;
+5. a reabertura gera um `EvaluationEvent`;
+6. toda alteração posterior relevante gera novos eventos;
+7. o laudo anteriormente emitido permanece imutável;
+8. uma nova conclusão pode gerar uma nova versão do laudo.
+
+A autenticação deve ser baseada no usuário do EMIT. Não é necessário criar uma "senha da avaliação" no modelo de domínio.
+
+## Regra de versionamento do laudo
+
+```text
+Avaliação
+   |
+   +-- emissão --> Laudo v1 [imutável]
+   |
+   +-- reabertura --> alterações auditadas
+                         |
+                         +-- nova conclusão
+                                |
+                                +-- emissão --> Laudo v2 [imutável]
+```
+
+Cada versão possui seu próprio momento de emissão e snapshot.
+
+O QR Code de v1 deve continuar consultando v1 mesmo depois da emissão de v2.
+
+A existência de v2 não altera nem apaga v1. A aplicação pode indicar que existe uma versão posterior, conforme as regras de exposição pública, mas o conteúdo de v1 permanece preservado.
 
 ## Preenchimento flexível
 
@@ -233,11 +370,14 @@ Regras:
 
 1. campos podem ser opcionais ou obrigatórios conforme template;
 2. avaliações podem ser salvas parcialmente;
-3. o técnico pode retornar à avaliação;
+3. o técnico pode retornar à avaliação enquanto ela estiver editável;
 4. observações livres podem complementar campos estruturados;
-5. evidências podem ser adicionadas durante o processo;
-6. alterações relevantes geram eventos;
-7. o estado atual não substitui o histórico.
+5. o objetivo pode contextualizar a avaliação sem criar uma taxonomia obrigatória;
+6. evidências podem ser adicionadas durante o processo;
+7. alterações relevantes geram eventos;
+8. depois de um laudo emitido, alterações exigem reabertura;
+9. o estado atual não substitui o histórico;
+10. uma versão de laudo nunca deve depender do estado atual para reconstruir seu conteúdo.
 
 ## Timeline x estado atual
 
@@ -245,10 +385,11 @@ São conceitos diferentes:
 
 - **Estado atual**: permite abrir a avaliação e continuar o trabalho rapidamente.
 - **Timeline**: permite entender o que aconteceu, quando aconteceu e quem fez cada alteração.
+- **Laudo**: representa o documento emitido em um momento específico.
 
 A timeline não deve ser derivada apenas comparando registros atuais. Eventos de alteração devem ser persistidos.
 
-## Regra de versionamento
+## Regra de versionamento de templates
 
 Templates são configuráveis pelo Administrador, mas a avaliação deve apontar para uma versão específica.
 
@@ -262,7 +403,7 @@ Template
   +-- Version 2 ----> Novas avaliações
 ```
 
-Isso impede que uma alteração administrativa mude retroativamente o formulário utilizado em um laudo já produzido.
+Isso impede que uma alteração administrativa mude retroativamente o formulário utilizado em uma avaliação.
 
 ## Regra sobre OS
 
@@ -278,22 +419,7 @@ Solicitante -> Avaliação <- Equipamento
 
 Essa decisão mantém o domínio focado no trabalho técnico e permite integrar posteriormente com sistemas externos.
 
-
-## Installation
-
-Representa a configuração persistente de uma instalação do EMIT.
-
-Uma instalação possui uma única configuração inicial e deve conhecer, no mínimo:
-
-- status de inicialização;
-- versão do sistema que criou/atualizou a configuração;
-- empresa emissora dos laudos;
-- domínio público canônico;
-- preferências iniciais de templates.
-
-A configuração de instalação não deve ser confundida com a configuração de ambiente do Docker.
-
-### InitialSetup
+## InitialSetup
 
 Representa o processo de primeira execução.
 
@@ -304,7 +430,7 @@ Deve garantir que somente uma configuração inicial seja concluída para a inst
 3. usuário Administrador inicial;
 4. usuário Técnico opcional;
 5. escolha entre templates iniciais ou configuração limpa;
-6. domínio público inicial, quando aplicável.
+6. domínio público inicial.
 
 O processo deve ser transacional e idempotente.
 
@@ -362,7 +488,7 @@ https://emit.dominio.com.br
 Esse valor é usado para:
 
 - navegação e links absolutos;
-- URLs públicas de laudos;
+- URLs públicas de versões de laudos;
 - QR Codes;
 - metadados;
 - referências geradas pela aplicação.
