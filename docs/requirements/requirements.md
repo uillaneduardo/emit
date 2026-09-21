@@ -119,6 +119,7 @@
 - RF-111 Registrar alterações de configurações que afetem avaliações futuras.
 - RF-112 Diferenciar histórico da avaliação de auditoria administrativa da plataforma.
 - RF-113 Registrar ações de reabertura de avaliações que já possuam laudo emitido.
+- RF-114 Registrar obrigatoriamente o motivo informado na reabertura.
 
 ## 11. Configuração inicial da instalação
 
