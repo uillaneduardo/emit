@@ -45,6 +45,19 @@ concluir + emitir
 Laudo v2 [imutável]
 ```
 
+## Estado e reabertura
+
+A avaliação mantém um conjunto pequeno de estados:
+
+- `DRAFT`
+- `IN_PROGRESS`
+- `COMPLETED`
+- `CANCELLED`
+
+A emissão do laudo não cria um estado `REPORT_ISSUED`. O bloqueio da avaliação após emissão é uma condição de integridade separada do status, podendo ser representado por um atributo como `lockedAt`.
+
+Também não será criado um estado permanente `REOPENED`. Reabertura é uma operação explícita registrada na timeline que torna novamente editável uma avaliação já protegida, normalmente retornando-a para `IN_PROGRESS`.
+
 ## Reabertura
 
 Não será criada uma senha exclusiva para cada avaliação.
