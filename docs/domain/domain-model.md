@@ -59,6 +59,7 @@ Uma instalação possui uma única configuração inicial e deve conhecer, no m�
 - versão do sistema que criou/atualizou a configuração;
 - empresa emissora dos laudos;
 - domínio público canônico;
+- preferência de autorização para reabertura de avaliações;
 - preferências iniciais de templates.
 
 A configuração de instalação não deve ser confundida com a configuração de ambiente do Docker.
