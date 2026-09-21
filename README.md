@@ -16,6 +16,7 @@ Uma avaliação:
 - reúne dados estruturados, observações, testes e evidências;
 - mantém histórico de alterações;
 - possui uma linha do tempo consultável;
+- possui estados simples de trabalho (`DRAFT`, `IN_PROGRESS`, `COMPLETED` ou `CANCELLED`);
 - pode originar um ou mais laudos.
 
 O objetivo da avaliação não é uma classificação estrutural obrigatória. Ele é um texto semântico preenchido pelo técnico, podendo registrar contextos como estado de entrada, estado de saída, diagnóstico, inspeção, manutenção ou orçamento.
