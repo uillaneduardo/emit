@@ -7,6 +7,7 @@
 - RF-003 O Técnico deve executar e preencher avaliações.
 - RF-004 O controle de permissões deve permanecer simples, baseado nesses dois perfis.
 - RF-005 A empresa/tenant deve ser isolada das demais empresas.
+- RF-006 A configuração da instalação deve definir se Técnicos podem reabrir avaliações que já possuam laudo emitido; caso contrário, somente Administradores poderão fazê-lo.
 
 ## 2. Solicitantes
 
