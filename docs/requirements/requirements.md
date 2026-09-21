@@ -95,6 +95,46 @@
 - RF-101 Registrar alterações de configurações que afetem avaliações futuras.
 - RF-102 Diferenciar histórico da avaliação de auditoria administrativa da plataforma.
 
+## 11. Configuração inicial da instalação
+
+- RF-110 Na primeira execução após o deploy, o sistema deve detectar que a instalação ainda não foi inicializada.
+- RF-111 A primeira execução deve apresentar um assistente de configuração inicial antes do uso normal da plataforma.
+- RF-112 O assistente deve cadastrar os dados da empresa que emitirá os laudos.
+- RF-113 O cadastro inicial deve contemplar endereço e telefone da empresa.
+- RF-114 O assistente deve criar o primeiro usuário Administrador.
+- RF-115 O assistente deve permitir cadastrar um usuário Técnico durante a instalação.
+- RF-116 O cadastro do Técnico deve ser opcional e poderá ser realizado posteriormente pelo Administrador.
+- RF-117 O assistente deve perguntar se a instalação iniciará com templates fornecidos pela própria instalação ou com configuração limpa.
+- RF-118 A escolha de templates iniciais deve ser registrada na configuração da instalação.
+- RF-119 O assistente deve impedir a criação de uma segunda configuração inicial concorrente.
+- RF-120 A instalação somente deve ser considerada inicializada após a conclusão consistente de todas as etapas obrigatórias.
+
+## 12. Exportação e importação de templates
+
+- RF-130 O Administrador deve poder exportar templates configurados.
+- RF-131 A exportação deve utilizar formato estruturado, versionado e independente do banco de dados.
+- RF-132 O arquivo de exportação deve conter a versão do formato de exportação.
+- RF-133 O arquivo deve conter a versão do sistema EMIT que gerou a exportação.
+- RF-134 O arquivo deve conter metadados suficientes para identificar os templates e suas versões.
+- RF-135 A importação deve validar a versão do formato antes de processar o conteúdo.
+- RF-136 A importação deve verificar a compatibilidade entre a versão do sistema e a versão do formato.
+- RF-137 O sistema deve diferenciar incompatibilidade obrigatória de compatibilidade parcial/migração possível.
+- RF-138 A importação não deve sobrescrever silenciosamente templates existentes.
+- RF-139 O processo deve apresentar ao Administrador o que será criado, atualizado ou ignorado antes da confirmação.
+- RF-140 A exportação/importação deve preservar campos, seções, testes, opções, regras e configurações necessárias para reconstruir o template.
+- RF-141 O formato deve permitir futura evolução através de migrações de versão.
+
+## 13. Domínio público da instalação
+
+- RF-150 O Administrador deve poder configurar o domínio público da instalação, por exemplo `emit.dominio.com.br`.
+- RF-151 O domínio configurado deve ser utilizado como URL canônica da aplicação.
+- RF-152 Links internos, links públicos de laudos, QR Codes, metadados e referências geradas pelo sistema devem utilizar o domínio configurado.
+- RF-153 O domínio público configurado deve ser persistido na configuração da instalação, e não depender exclusivamente de variável de ambiente.
+- RF-154 Variável de ambiente pode fornecer o domínio inicial/default durante o deploy, mas a configuração persistida deve ser a fonte de verdade após a inicialização.
+- RF-155 A aplicação deve validar o formato do domínio informado.
+- RF-156 A mudança do domínio deve refletir nas novas URLs geradas sem alterar tokens públicos existentes.
+- RF-157 O sistema deve possuir mecanismo para informar/validar a origem pública permitida e evitar uso indevido do Host header.
+
 ## Não funcionais
 
 - RNF-001 Responsivo, com prioridade mobile.
