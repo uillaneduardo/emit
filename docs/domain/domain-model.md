@@ -277,3 +277,133 @@ Solicitante -> Avaliação <- Equipamento
 ```
 
 Essa decisão mantém o domínio focado no trabalho técnico e permite integrar posteriormente com sistemas externos.
+
+
+## Installation
+
+Representa a configuração persistente de uma instalação do EMIT.
+
+Uma instalação possui uma única configuração inicial e deve conhecer, no mínimo:
+
+- status de inicialização;
+- versão do sistema que criou/atualizou a configuração;
+- empresa emissora dos laudos;
+- domínio público canônico;
+- preferências iniciais de templates.
+
+A configuração de instalação não deve ser confundida com a configuração de ambiente do Docker.
+
+### InitialSetup
+
+Representa o processo de primeira execução.
+
+Deve garantir que somente uma configuração inicial seja concluída para a instalação. O fluxo inclui:
+
+1. dados da empresa;
+2. endereço e telefone;
+3. usuário Administrador inicial;
+4. usuário Técnico opcional;
+5. escolha entre templates iniciais ou configuração limpa;
+6. domínio público inicial, quando aplicável.
+
+O processo deve ser transacional e idempotente.
+
+## ExportPackage
+
+Não é necessário persistir o arquivo exportado como entidade de domínio permanente.
+
+O arquivo deve possuir um envelope versionado contendo, conceitualmente:
+
+- `format`: identificação do formato;
+- `formatVersion`: versão do formato;
+- `product`: EMIT;
+- `systemVersion`: versão do EMIT que gerou o arquivo;
+- `exportedAt`: data/hora da exportação;
+- `templates`: templates e versões exportadas;
+- `metadata`: informações auxiliares necessárias à importação.
+
+Exemplo conceitual:
+
+```json
+{
+  "format": "emit-template-package",
+  "formatVersion": 1,
+  "product": "EMIT",
+  "systemVersion": "0.1.0",
+  "exportedAt": "2026-09-21T00:00:00Z",
+  "templates": []
+}
+```
+
+O formato deve ser tratado como contrato de interoperabilidade, não como dump do PostgreSQL.
+
+### Compatibilidade de importação
+
+A importação deve validar em etapas:
+
+1. formato reconhecido;
+2. versão do formato suportada;
+3. versão do EMIT de origem;
+4. recursos utilizados pelo pacote;
+5. conflitos com templates existentes.
+
+Se houver migração possível, o sistema deve indicar a migração antes de concluir a importação.
+
+## PublicInstallationConfig
+
+Configuração pública persistente da instalação.
+
+Inclui o domínio canônico, por exemplo:
+
+```text
+https://emit.dominio.com.br
+```
+
+Esse valor é usado para:
+
+- navegação e links absolutos;
+- URLs públicas de laudos;
+- QR Codes;
+- metadados;
+- referências geradas pela aplicação.
+
+A variável de ambiente pode servir apenas como valor inicial/default de bootstrap.
+
+## Relação com Company
+
+A empresa cadastrada na primeira execução é a entidade emissora dos laudos. Ela não deve ser tratada apenas como um valor técnico de configuração.
+
+```text
+Installation
+   |
+   +-- Company (emissora)
+   +-- PublicInstallationConfig
+   +-- Users
+   +-- Templates
+   +-- Evaluations
+```
+
+## Primeira execução
+
+```text
+Deploy
+  |
+  v
+Banco vazio / instalação não inicializada
+  |
+  v
+Initial Setup
+  |
+  +--> Empresa
+  +--> Endereço / telefone
+  +--> Administrador
+  +--> Técnico (opcional)
+  +--> Templates iniciais ou configuração limpa
+  +--> Domínio público
+  |
+  v
+Instalação inicializada
+  |
+  v
+Aplicação normal
+```
