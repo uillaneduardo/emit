@@ -11,9 +11,12 @@
 7. Preenchimento progressivo com salvamento de estado parcial.
 8. Histórico de alterações persistente e append-only.
 9. Timeline da avaliação baseada em eventos, não somente em comparação de estados.
-10. Identificadores públicos não enumeráveis.
-11. Preparação para jobs assíncronos sem microsserviços prematuros.
-12. Deploy reproduzível via Docker Compose.
+10. Após emissão, um laudo é imutável.
+11. Alterações posteriores exigem reabertura explícita e são auditadas.
+12. Versões de laudo preservam snapshots do conteúdo emitido.
+13. Identificadores públicos não enumeráveis.
+14. Preparação para jobs assíncronos sem microsserviços prematuros.
+15. Deploy reproduzível via Docker Compose.
 
 ## Perfis
 
@@ -37,6 +40,7 @@ A autorização deve ser simples. Não criar uma hierarquia de papéis genérico
 - evaluations
 - tests
 - attachments
+- reports
 - public-access
 - qrcode
 - audit
@@ -44,7 +48,6 @@ A autorização deve ser simples. Não criar uma hierarquia de papéis genérico
 ### Módulos secundários
 
 - work-order-reference
-- reports
 - notifications
 
 A referência de OS não deve dominar o desenho do domínio.
@@ -65,6 +68,7 @@ Administrador
 Solicitante --> Avaliação <-- Equipamento
                    |
                    +--> Técnico
+                   +--> Objetivo (texto opcional)
                    +--> Respostas
                    +--> Testes
                    +--> Evidências
@@ -75,26 +79,118 @@ Solicitante --> Avaliação <-- Equipamento
                    |       v
                    |    Timeline
                    |
-                   +--> Laudo
-                           |
-                           +--> Consulta pública / QR Code
+                   +--> emissão
+                          |
+                          v
+                       Laudo
+                          |
+                          +--> ReportVersion
+                          |      +--> Snapshot
+                          |      +--> PDF
+                          |      +--> PublicAccess
+                          |      +--> QR Code
+                          |
+                          +--> nova versão após reabertura
 ```
 
-## Histórico e consistência
+## Objetivo da avaliação
+
+O objetivo é um campo textual opcional da avaliação.
+
+Ele existe para contextualizar o trabalho para quem preenche, revisa ou lê o laudo. Não deve ser transformado em entidade ou enum obrigatório.
+
+Exemplos:
+
+- estado de entrada;
+- estado de saída;
+- diagnóstico;
+- inspeção;
+- avaliação para orçamento;
+- manutenção;
+- outro contexto descrito pelo técnico.
+
+A ausência do objetivo não impede a avaliação.
+
+## Histórico, bloqueio e consistência
 
 Toda operação relevante sobre uma avaliação deve atualizar o estado atual e, na mesma transação, registrar o evento correspondente.
 
 Exemplo conceitual:
 
 ```text
+BEGIN
 UPDATE evaluation
 INSERT evaluation_event
 COMMIT
 ```
 
-Se uma alteração de resposta ocorrer, o evento deve identificar o campo afetado e, quando necessário, preservar o valor anterior e o novo valor.
+Quando a operação for uma emissão de laudo, a transação deve estabelecer o marco de integridade da avaliação e registrar o evento de emissão.
+
+Após a emissão de um laudo:
+
+1. a avaliação fica protegida contra edição normal;
+2. uma operação explícita de reabertura deve ser executada antes de qualquer alteração;
+3. a reabertura deve ser autorizada pelo mecanismo de acesso do EMIT;
+4. reabertura e alterações posteriores geram eventos;
+5. a avaliação pode ser concluída novamente;
+6. uma nova emissão gera uma nova versão do laudo.
+
+Não é necessário criar uma senha exclusiva para cada avaliação. A identidade do usuário autenticado e a auditoria da operação são os mecanismos de rastreabilidade.
 
 Eventos não devem ser editados ou apagados pelo fluxo normal da aplicação.
+
+## Laudos e snapshots
+
+O módulo `reports` representa a emissão documental da avaliação.
+
+Uma emissão cria uma versão imutável:
+
+```text
+Evaluation
+   |
+   +-- ReportVersion 1
+   |      +-- Snapshot
+   |      +-- PDF
+   |      +-- PublicAccess
+   |
+   +-- reopen + changes
+   |
+   +-- ReportVersion 2
+          +-- Snapshot
+          +-- PDF
+          +-- PublicAccess
+```
+
+O snapshot é a representação congelada do conteúdo utilizado para gerar aquela versão.
+
+O laudo não deve ser renderizado novamente a partir do estado atual da avaliação para consultas históricas. A consulta de uma versão deve utilizar seu snapshot.
+
+O QR Code deve apontar para a publicação daquela versão. A existência de uma versão posterior não modifica a versão anterior.
+
+O PDF é uma representação derivada da versão emitida. O espaço para assinatura, técnico responsável, local, data e hora fazem parte da composição documental do laudo.
+
+No MVP, "assinatura" representa o espaço/registro previsto no documento. Não implica assinatura digital com certificado.
+
+## Publicação e validação
+
+A publicação pública deve ser associada a uma versão específica do laudo.
+
+```text
+ReportVersion
+      |
+      +--> PublicAccess
+      |      +--> random token
+      |      +--> visibility rules
+      |      +--> status / revocation
+      |
+      +--> QR Code
+      |
+      +--> public URL
+```
+
+O token não deve ser enumerável nem conter o conteúdo do documento.
+
+A consulta pública deve apresentar a versão publicada do laudo e permitir verificar sua situação de publicação.
 
 ## Versionamento de templates
 
@@ -118,7 +214,6 @@ Template
 Produção: Docker Engine, Docker Compose, volumes persistentes para PostgreSQL e MinIO e publicação através do Cloudflare. O `.env` pertence ao ambiente de implantação e não ao repositório.
 
 PostgreSQL e MinIO não devem ser publicados diretamente na Internet. O acesso externo deve ocorrer somente pelos serviços necessários da aplicação/reverse proxy.
-
 
 ## Bootstrap e configuração inicial
 
@@ -176,7 +271,7 @@ https://emit.dominio.com.br
 Ele deve ser utilizado por toda a aplicação na geração de URLs absolutas, incluindo:
 
 - links de navegação que necessitem de URL absoluta;
-- links públicos de avaliações/laudos;
+- links públicos de versões de laudos;
 - QR Codes;
 - canonical URLs;
 - Open Graph/metadados;
