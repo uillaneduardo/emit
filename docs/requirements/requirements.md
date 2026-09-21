@@ -161,6 +161,7 @@
 - RF-165 A aplicação deve validar o formato do domínio informado.
 - RF-166 A mudança do domínio deve refletir nas novas URLs geradas sem alterar tokens públicos existentes.
 - RF-167 O sistema deve possuir mecanismo para informar/validar a origem pública permitida e evitar uso indevido do Host header.
+- RF-168 A configuração que determina quem pode reabrir avaliações deve ser persistida como configuração funcional da instalação e ser alterável nas configurações administrativas do sistema.
 
 ## Não funcionais
 
