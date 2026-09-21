@@ -9,9 +9,10 @@
 5. Arquivos grandes fora do banco, em storage S3-compatible.
 6. Estruturas de avaliação dirigidas por configuração e versionamento.
 7. Preenchimento progressivo com salvamento de estado parcial.
-8. Histórico de alterações persistente e append-only.
-9. Timeline da avaliação baseada em eventos, não somente em comparação de estados.
-10. Após emissão, um laudo é imutável.
+8. O estado da avaliação deve permanecer simples, limitado a `DRAFT`, `IN_PROGRESS`, `COMPLETED` e `CANCELLED`.
+9. Histórico de alterações persistente e append-only.
+10. Timeline da avaliação baseada em eventos, não somente em comparação de estados.
+11. Após emissão, um laudo é imutável.
 11. Alterações posteriores exigem reabertura explícita e são auditadas.
 12. Versões de laudo preservam snapshots do conteúdo emitido.
 13. Identificadores públicos não enumeráveis.
@@ -130,7 +131,7 @@ Após a emissão de um laudo:
 
 1. a avaliação mantém seu estado técnico e recebe um marco de proteção contra edição normal;
 2. o bloqueio deve ser tratado separadamente do status da avaliação;
-2. uma operação explícita de reabertura deve ser executada antes de qualquer alteração;
+3. uma operação explícita de reabertura deve ser executada antes de qualquer alteração;
 3. a reabertura deve ser autorizada pelo mecanismo de acesso do EMIT;
 4. reabertura e alterações posteriores geram eventos;
 5. a avaliação pode ser concluída novamente;
