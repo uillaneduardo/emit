@@ -484,6 +484,21 @@ A importação deve validar em etapas:
 
 Se houver migração possível, o sistema deve indicar a migração antes de concluir a importação.
 
+## Reabertura e autorização
+
+A autorização para reabrir uma avaliação que já possua laudo emitido é uma configuração funcional da instalação.
+
+A instalação deve oferecer duas opções:
+
+- **Técnico e Administrador**: Técnicos podem reabrir avaliações, além dos Administradores;
+- **Somente Administrador**: apenas Administradores podem executar a reabertura.
+
+A configuração deve ser definida durante o Initial Setup e posteriormente alterável nas configurações administrativas do sistema.
+
+Independentemente do perfil autorizado, toda reabertura exige um **motivo obrigatório** informado pelo usuário. O motivo deve ser armazenado no evento de reabertura e permanecer disponível na timeline/auditoria.
+
+A autorização não deve criar um terceiro perfil nem uma árvore de permissões complexa.
+
 ## PublicInstallationConfig
 
 Configuração pública persistente da instalação.
