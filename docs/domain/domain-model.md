@@ -342,8 +342,9 @@ Após a emissão de qualquer laudo para uma avaliação:
 1. a avaliação entra em estado protegido contra edição normal;
 2. ações de edição comuns devem ser recusadas pela camada de aplicação;
 3. uma alteração exige uma operação explícita de reabertura;
-4. a reabertura deve exigir autenticação/autorização compatível com o perfil e a política definida;
-5. a reabertura gera um `EvaluationEvent`;
+4. a reabertura deve exigir autenticação/autorização compatível com o perfil e a política configurada na instalação;
+5. a reabertura deve exigir um motivo informado pelo usuário;
+6. a reabertura gera um `EvaluationEvent` contendo, entre outros dados, o motivo informado;
 6. toda alteração posterior relevante gera novos eventos;
 7. o laudo anteriormente emitido permanece imutável;
 8. uma nova conclusão pode gerar uma nova versão do laudo.
