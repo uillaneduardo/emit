@@ -345,9 +345,9 @@ Após a emissão de qualquer laudo para uma avaliação:
 4. a reabertura deve exigir autenticação/autorização compatível com o perfil e a política configurada na instalação;
 5. a reabertura deve exigir um motivo informado pelo usuário;
 6. a reabertura gera um `EvaluationEvent` contendo, entre outros dados, o motivo informado;
-6. toda alteração posterior relevante gera novos eventos;
-7. o laudo anteriormente emitido permanece imutável;
-8. uma nova conclusão pode gerar uma nova versão do laudo.
+7. toda alteração posterior relevante gera novos eventos;
+8. o laudo anteriormente emitido permanece imutável;
+9. uma nova conclusão pode gerar uma nova versão do laudo.
 
 A autenticação deve ser baseada no usuário do EMIT. Não é necessário criar uma "senha da avaliação" no modelo de domínio.
 
