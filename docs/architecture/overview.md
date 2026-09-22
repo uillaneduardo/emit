@@ -162,7 +162,7 @@ A interface deve fornecer reprodução/visualização básica:
 | AUDIO | controles nativos de reprodução |
 | VIDEO | controles nativos de reprodução |
 
-A implementação inicial pode utilizar os recursos nativos do navegador. Não é necessário criar um player multimídia proprietário nem implementar transcodificação ou streaming adaptativo no MVP.
+A implementação inicial pode utilizar os recursos nativos do navegador. Para captura de áudio/vídeo, a implementação pode utilizar APIs de mídia do navegador, como `getUserMedia` e `MediaRecorder`. A gravação deve ser iniciada a partir da própria tela da avaliação e, após confirmação, o resultado deve ser vinculado automaticamente à avaliação. Se a permissão de câmera/microfone for negada ou o recurso não estiver disponível, a interface deve informar o problema sem bloquear o restante da avaliação. Não é necessário criar um player multimídia proprietário nem implementar transcodificação ou streaming adaptativo no MVP.
 
 A evidência pode ser vinculada à avaliação, seção, campo ou teste. O técnico decide quais evidências participam da composição do laudo. Evidências não selecionadas continuam sendo materiais internos da avaliação, sujeitas às permissões de acesso.
 
