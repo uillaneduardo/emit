@@ -72,6 +72,16 @@ A operação deve usar a autenticação e autorização do usuário do EMIT. A a
 As alterações realizadas após a reabertura continuam sendo registradas na timeline.
 
 ## Snapshot do laudo
+### Evidências e arquivos
+
+As evidências fazem parte do processo técnico da avaliação, mas sua inclusão no laudo é uma decisão de composição documental.
+
+O MVP deve aceitar imagem, áudio e vídeo como evidências e permitir visualização/reprodução básica diretamente na aplicação. Para imagem, isso significa visualização; para áudio e vídeo, controles simples de reprodução. Não faz parte desta decisão implementar recursos avançados de player, edição, transcodificação ou streaming adaptativo.
+
+Uma evidência utilizada na versão emitida deve ser preservada por referência de armazenamento imutável. Isso impede que alterações posteriores no arquivo original modifiquem o conteúdo de um laudo histórico.
+
+A seleção de evidências para o laudo deve ocorrer na composição da versão emitida. Evidências não selecionadas podem continuar existindo apenas no contexto interno da avaliação.
+
 
 O snapshot representa a composição documental relevante utilizada na emissão. O Laudo é uma representação da Avaliação, combinando as informações registradas pelo técnico e outras informações relevantes em uma apresentação amigável e padronizada.
 
