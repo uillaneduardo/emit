@@ -72,7 +72,12 @@
 - RF-064 Associar evidências à avaliação, seção, campo ou teste quando aplicável.
 - RF-065 Permitir emitir um laudo a partir de uma avaliação concluída.
 - RF-066 O laudo deve possuir versões numeradas quando uma avaliação for reaberta e emitida novamente.
-- RF-067 Cada versão emitida deve preservar um snapshot imutável dos dados utilizados na emissão.
+- RF-067 Cada versão emitida deve preservar um snapshot imutável da composição documental utilizada na emissão.
+- RF-067-A O Snapshot deve preservar os dados e informações necessários para reproduzir o conteúdo do laudo sem depender do estado atual mutável da avaliação.
+- RF-067-B O Snapshot deve representar o documento emitido, e não um dump do banco de dados.
+- RF-067-C O Snapshot deve preservar, conforme aplicável, informações do emissor, solicitante, equipamento, objetivo, local, técnico, campos e resultados, testes, observações, conclusão, evidências, textos/rótulos relevantes, template/versão, identidade visual e metadados de emissão.
+- RF-067-D Evidências incorporadas ao laudo devem possuir referências de armazenamento imutáveis, preservando os arquivos utilizados na versão emitida.
+- RF-067-E A existência de dados no Snapshot não implica sua exposição pública; a consulta pública deve aplicar regras próprias de publicação e minimização de dados pessoais e sensíveis.
 - RF-068 O laudo deve registrar o técnico responsável pela emissão, local, data e hora de emissão.
 - RF-069 O laudo deve disponibilizar local para assinatura.
 - RF-070 O laudo deve poder ser gerado em PDF.
@@ -80,6 +85,9 @@
 - RF-072 O laudo deve possuir um QR Code para consulta/validação.
 - RF-073 O QR Code deve apontar para um token público aleatório e não enumerável.
 - RF-074 A consulta pública de uma versão deve apresentar o conteúdo correspondente àquela versão, não o estado atual mutável da avaliação.
+- RF-074-A A consulta digital deve representar o laudo emitido de forma amigável e padronizada, conforme o modelo de apresentação do EMIT.
+- RF-074-B A mesma ReportVersion deve poder originar a representação digital e o PDF destinado à impressão em formato A4.
+- RF-074-C A publicação pública não deve expor automaticamente todos os dados existentes na avaliação ou no Snapshot.
 - RF-075 Permitir controlar quais informações do laudo ficam públicas.
 - RF-076 Permitir revogar o acesso público sem alterar o conteúdo do laudo emitido.
 - RF-077 Não tratar assinatura no MVP como assinatura digital com certificado; o documento deve apenas disponibilizar o espaço/representação de assinatura definido pelo modelo do laudo.
