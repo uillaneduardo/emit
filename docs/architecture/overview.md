@@ -142,6 +142,32 @@ Não é necessário criar uma senha exclusiva para cada avaliação. A identidad
 Eventos não devem ser editados ou apagados pelo fluxo normal da aplicação.
 
 ## Laudos e snapshots
+### Evidências e mídia
+
+O módulo `attachments` representa as evidências técnicas associadas às avaliações.
+
+No MVP, devem ser suportadas pelo menos três categorias de mídia:
+
+- `IMAGE`;
+- `AUDIO`;
+- `VIDEO`.
+
+O arquivo binário deve permanecer no storage S3-compatible/MinIO e seus metadados no PostgreSQL.
+
+A interface deve fornecer reprodução/visualização básica:
+
+| Mídia | Apresentação MVP |
+|---|---|
+| IMAGE | visualização |
+| AUDIO | controles nativos de reprodução |
+| VIDEO | controles nativos de reprodução |
+
+A implementação inicial pode utilizar os recursos nativos do navegador. Não é necessário criar um player multimídia proprietário nem implementar transcodificação ou streaming adaptativo no MVP.
+
+A evidência pode ser vinculada à avaliação, seção, campo ou teste. O técnico decide quais evidências participam da composição do laudo. Evidências não selecionadas continuam sendo materiais internos da avaliação, sujeitas às permissões de acesso.
+
+Ao emitir uma `ReportVersion`, qualquer evidência incorporada ao documento deve ser congelada por referência de armazenamento imutável.
+
 
 O módulo `reports` representa a emissão documental da avaliação.
 
