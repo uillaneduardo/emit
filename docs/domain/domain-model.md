@@ -499,6 +499,52 @@ Independentemente do perfil autorizado, toda reabertura exige um **motivo obriga
 
 A autorização não deve criar um terceiro perfil nem uma árvore de permissões complexa.
 
+## Laudo e ReportSnapshot
+
+O **Laudo** é uma representação documental da Avaliação. Ele combina as informações registradas pelo técnico e outras informações relevantes e as organiza de forma amigável, padronizada e adequada aos padrões de apresentação do EMIT.
+
+O Laudo não é uma simples cópia dos dados atuais da Avaliação. A composição documental considera o template e sua versão, a organização das informações, os textos/rótulos apresentados, os dados técnicos, os resultados, as observações, a conclusão, as evidências selecionadas e demais informações relevantes para a entrega do documento.
+
+Cada emissão cria uma `ReportVersion` imutável. A versão possui um `ReportSnapshot` que preserva os dados e a composição necessários para reproduzir o conteúdo daquele laudo sem depender do estado atual da Avaliação.
+
+O Snapshot não é um dump do banco. Ele deve preservar, conforme aplicável:
+
+- emissor e informações da empresa apresentadas no documento;
+- solicitante apresentado no documento;
+- identificação do equipamento;
+- objetivo;
+- local;
+- técnico responsável;
+- campos, respostas e resultados;
+- testes;
+- observações;
+- conclusão;
+- evidências selecionadas;
+- textos e rótulos relevantes para apresentação;
+- template e versão utilizados;
+- identidade visual necessária à composição;
+- data/hora e identificação da emissão;
+- informações necessárias à consulta/validação da versão.
+
+Evidências que integram uma versão emitida devem possuir referências de armazenamento imutáveis, evitando que alteração, substituição ou exclusão do arquivo original modifique uma versão histórica.
+
+A mesma `ReportVersion` pode gerar diferentes representações do documento:
+
+```text
+ReportVersion
+    |
+    +--> Consulta digital
+    |      +--> URL pública
+    |      +--> QR Code
+    |
+    +--> PDF
+           +--> impressão A4
+```
+
+A consulta pública é uma representação digital do laudo emitido. Ela não deve expor automaticamente todos os dados existentes na Avaliação ou no Snapshot. A publicação deve aplicar regras próprias de visibilidade e minimização de dados pessoais e sensíveis.
+
+Uma versão histórica deve continuar apresentando o conteúdo documental congelado no momento da emissão, mesmo que a Avaliação, cadastros, template ou identidade visual atual sejam alterados posteriormente.
+
 ## PublicInstallationConfig
 
 Configuração pública persistente da instalação.
