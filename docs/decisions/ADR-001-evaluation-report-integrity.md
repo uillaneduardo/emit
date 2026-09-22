@@ -73,7 +73,7 @@ As alterações realizadas após a reabertura continuam sendo registradas na tim
 
 ## Snapshot do laudo
 
-O snapshot representa o conteúdo relevante utilizado na emissão.
+O snapshot representa a composição documental relevante utilizada na emissão. O Laudo é uma representação da Avaliação, combinando as informações registradas pelo técnico e outras informações relevantes em uma apresentação amigável e padronizada.
 
 Ele permite que:
 
@@ -82,7 +82,9 @@ Ele permite que:
 - a emissão de uma nova versão não altere versões anteriores;
 - o sistema audite a relação entre avaliação e documento emitido.
 
-O snapshot não é um dump do banco e não precisa replicar todas as tabelas do domínio.
+O snapshot não é um dump do banco e não precisa replicar todas as tabelas do domínio. Deve preservar os dados e a composição necessários para reproduzir a versão emitida, incluindo, conforme aplicável, emissor, solicitante, equipamento, objetivo, local, técnico, resultados, testes, observações, conclusão, evidências, textos/rótulos, template/versão, identidade visual e metadados de emissão. Evidências que integram o documento devem ter referências de armazenamento imutáveis.
+
+A mesma versão pode ser entregue digitalmente por URL/QR Code ou em PDF para impressão A4. A consulta pública deve representar o laudo emitido e aplicar minimização de dados pessoais e sensíveis, sem expor automaticamente todo o conteúdo interno da avaliação.
 
 ## QR Code e consulta pública
 
