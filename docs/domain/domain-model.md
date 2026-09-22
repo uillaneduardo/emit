@@ -500,6 +500,34 @@ Independentemente do perfil autorizado, toda reabertura exige um **motivo obriga
 A autorização não deve criar um terceiro perfil nem uma árvore de permissões complexa.
 
 ## Laudo e ReportSnapshot
+### Evidências, arquivos e reprodução
+
+A evidência pertence ao processo técnico da avaliação. Sua inclusão no laudo é uma decisão de composição documental.
+
+No MVP, os tipos de mídia prioritários são:
+
+- imagem;
+- áudio;
+- vídeo.
+
+A evidência deve manter metadados no PostgreSQL e o conteúdo binário no storage S3-compatible/MinIO.
+
+A aplicação deve oferecer uma reprodução/visualização básica:
+
+| Mídia | MVP |
+|---|---|
+| Imagem | visualização |
+| Áudio | player nativo |
+| Vídeo | player nativo |
+
+Não é necessário implementar um player multimídia avançado no MVP. Recursos como edição de mídia, transcodificação automática, streaming adaptativo, playlists ou controles avançados ficam fora do escopo inicial.
+
+Uma evidência pode estar associada à avaliação como um todo ou, quando aplicável, a uma seção, campo ou teste.
+
+Nem toda evidência deve aparecer no laudo. O técnico deve poder selecionar as evidências que participam da composição documental. Evidências internas podem permanecer fora do documento entregue.
+
+Quando uma evidência for utilizada em uma `ReportVersion`, o conteúdo utilizado deve ser preservado de forma imutável. Assim, a versão histórica continua reproduzível mesmo que a evidência original seja substituída, removida ou alterada posteriormente.
+
 
 O **Laudo** é uma representação documental da Avaliação. Ele combina as informações registradas pelo técnico e outras informações relevantes e as organiza de forma amigável, padronizada e adequada aos padrões de apresentação do EMIT.
 
