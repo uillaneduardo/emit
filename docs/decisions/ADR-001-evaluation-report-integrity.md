@@ -76,7 +76,7 @@ As alterações realizadas após a reabertura continuam sendo registradas na tim
 
 As evidências fazem parte do processo técnico da avaliação, mas sua inclusão no laudo é uma decisão de composição documental.
 
-O MVP deve aceitar imagem, áudio e vídeo como evidências e permitir visualização/reprodução básica diretamente na aplicação. Para imagem, isso significa visualização; para áudio e vídeo, controles simples de reprodução. Não faz parte desta decisão implementar recursos avançados de player, edição, transcodificação ou streaming adaptativo.
+O MVP deve aceitar imagem, áudio e vídeo como evidências e permitir visualização/reprodução básica diretamente na aplicação. Para imagem, isso significa visualização; para áudio e vídeo, controles simples de reprodução. Além do upload, o técnico deve poder iniciar uma gravação de áudio ou vídeo diretamente da tela da avaliação e, após confirmar o resultado, vinculá-lo automaticamente à avaliação. A captura depende das permissões e capacidades do navegador; falhas de permissão ou suporte não devem bloquear o restante da avaliação. Não faz parte desta decisão implementar recursos avançados de player, edição, transcodificação ou streaming adaptativo.
 
 Uma evidência utilizada na versão emitida deve ser preservada por referência de armazenamento imutável. Isso impede que alterações posteriores no arquivo original modifiquem o conteúdo de um laudo histórico.
 
