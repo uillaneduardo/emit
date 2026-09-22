@@ -50,8 +50,9 @@ Solicitante (Pessoa Física ou Empresa)
                 |
                 +--> Laudo
                        +--> versão imutável
-                       +--> PDF
-                       +--> consulta pública
+                       +--> Snapshot
+                       +--> PDF / A4
+                       +--> consulta pública digital
                        +--> QR Code
 ```
 
@@ -65,31 +66,41 @@ Depois da emissão:
 
 - a avaliação fica bloqueada para edição normal;
 - uma alteração posterior exige **reabertura explícita** e autorização;
+- a reabertura exige um **motivo obrigatório**, independentemente do perfil autorizado;
 - a reabertura e as alterações ficam registradas na auditoria/timeline;
 - o laudo já emitido nunca é alterado;
 - uma nova emissão gera uma nova versão do laudo;
-- cada versão do laudo preserva um snapshot do conteúdo utilizado na emissão.
+- cada versão do laudo preserva um snapshot imutável da composição documental utilizada na emissão.
+
+A instalação define se a reabertura pode ser executada por **Somente Administrador** ou por **Administrador e Técnico**. Essa configuração pode ser alterada posteriormente nas configurações administrativas.
 
 Assim, o QR Code e a consulta pública de uma versão continuam representando exatamente o documento emitido naquele momento.
 
 ## Laudo
 
-O **Laudo** é a representação final e publicável de uma avaliação.
+O **Laudo** é uma representação documental da Avaliação, composta a partir das informações registradas pelo técnico e de outras informações relevantes, organizada conforme o template e os padrões de apresentação do EMIT.
 
-Ele pode ser:
+O laudo não é uma simples cópia dos dados da avaliação. Ele organiza e apresenta essas informações de forma amigável, padronizada e adequada ao meio de entrega.
 
-- gerado em PDF;
-- consultado por uma URL pública;
-- validado por QR Code;
-- impresso ou compartilhado.
+A mesma versão emitida pode ser apresentada em diferentes meios:
+
+- consulta digital por URL pública;
+- consulta através de QR Code;
+- PDF destinado à impressão em formato A4.
+
+O laudo deve preservar o conteúdo documental apresentado no momento da emissão, independentemente de alterações posteriores na avaliação, nos cadastros, no template ou na identidade visual atual do sistema.
+
+A versão pública não deve expor automaticamente todos os dados existentes na avaliação. A apresentação pública deve aplicar as regras de publicação e minimização de informações pessoais e sensíveis.
 
 O documento deve apresentar, conforme o contexto:
 
 - empresa emissora;
-- solicitante;
+- solicitante, conforme o que o laudo determinar como relevante;
 - equipamento;
 - objetivo da avaliação, quando informado;
 - conteúdo e resultados da avaliação;
+- testes;
+- observações;
 - conclusão;
 - nome do técnico responsável;
 - local;
@@ -99,6 +110,36 @@ O documento deve apresentar, conforme o contexto:
 - QR Code e endereço para consulta.
 
 O QR Code deve apontar para um identificador/token público não enumerável, e não carregar o conteúdo do laudo diretamente.
+
+## Snapshot do laudo
+
+Cada `ReportVersion` deve possuir um **Snapshot imutável** que represente a composição documental daquela versão.
+
+O Snapshot deve preservar os dados e informações necessários para reproduzir o conteúdo do laudo sem depender do estado atual mutável da avaliação.
+
+O Snapshot não é um dump do banco de dados. Ele representa o documento emitido e deve incluir, conforme aplicável:
+
+- dados da empresa emissora apresentados no documento;
+- solicitante apresentado no documento;
+- identificação do equipamento;
+- objetivo;
+- local;
+- técnico responsável;
+- campos e resultados;
+- testes;
+- observações;
+- conclusão;
+- evidências selecionadas para o laudo;
+- textos e rótulos relevantes para a apresentação;
+- referência ao template/versão utilizado;
+- identidade visual necessária à composição;
+- data/hora de emissão;
+- identificação da versão;
+- informações necessárias à consulta e validação.
+
+Evidências que fazem parte do laudo devem possuir referências de armazenamento imutáveis, de forma que substituição ou exclusão posterior do arquivo original não altere uma versão já emitida.
+
+A existência de uma informação no Snapshot não significa que ela deva ser exibida publicamente. A camada de publicação determina a representação pública do laudo.
 
 ## Arquitetura
 
