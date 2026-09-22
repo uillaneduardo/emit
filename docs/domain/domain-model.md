@@ -520,6 +520,10 @@ A aplicação deve oferecer uma reprodução/visualização básica:
 | Áudio | player nativo |
 | Vídeo | player nativo |
 
+Além do upload, o técnico deve poder iniciar uma gravação de áudio ou vídeo diretamente da tela da avaliação. Após encerrar a gravação, poderá confirmar ou cancelar o material; ao confirmar, a mídia será armazenada e vinculada automaticamente à avaliação e ao contexto em que a gravação foi iniciada.
+
+A evidência deve distinguir sua origem, no mínimo entre `UPLOAD` e `RECORDED_IN_APP`. Para mídias gravadas, devem ser preservados, quando disponíveis, usuário, data/hora, duração, MIME type e demais metadados técnicos necessários à reprodução e auditoria.
+
 Não é necessário implementar um player multimídia avançado no MVP. Recursos como edição de mídia, transcodificação automática, streaming adaptativo, playlists ou controles avançados ficam fora do escopo inicial.
 
 Uma evidência pode estar associada à avaliação como um todo ou, quando aplicável, a uma seção, campo ou teste.
