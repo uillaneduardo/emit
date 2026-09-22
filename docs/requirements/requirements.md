@@ -63,12 +63,19 @@
 - RF-056 Templates devem ser versionados.
 - RF-057 Uma avaliação deve preservar a versão do template utilizada, mesmo após alterações posteriores na configuração.
 
-## 6. Laudo, evidências e publicação
+## 6. Laudo, evidências e publicação- RF-064-A No MVP, permitir evidências dos tipos imagem, áudio e vídeo.
+- RF-064-B Permitir visualizar imagens e reproduzir áudio e vídeo diretamente na aplicação por controles básicos/nativos do navegador.
+- RF-064-C A reprodução no MVP não exige recursos avançados de player, edição, transcodificação ou streaming adaptativo.
+- RF-064-D Permitir selecionar quais evidências serão incorporadas à composição de uma versão do laudo.
+- RF-064-E Evidências não selecionadas para o laudo podem permanecer disponíveis apenas no contexto interno da avaliação, conforme as permissões aplicáveis.
+- RF-064-F Quando uma evidência for incorporada a uma versão emitida, preservar uma referência de armazenamento imutável ao conteúdo utilizado naquela versão.
+
 
 - RF-060 Adicionar texto formatado.
 - RF-061 Adicionar imagens.
 - RF-062 Adicionar vídeos.
-- RF-063 Adicionar documentos/arquivos.
+- RF-063 Adicionar documentos/arquivos.- RF-063-A Permitir armazenar outros arquivos como evidência quando suportados pelo storage e pelas regras de segurança, mesmo que não possuam reprodução direta no MVP.
+
 - RF-064 Associar evidências à avaliação, seção, campo ou teste quando aplicável.
 - RF-065 Permitir emitir um laudo a partir de uma avaliação concluída.
 - RF-066 O laudo deve possuir versões numeradas quando uma avaliação for reaberta e emitida novamente.
