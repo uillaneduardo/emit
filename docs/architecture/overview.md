@@ -13,11 +13,11 @@
 9. Histórico de alterações persistente e append-only.
 10. Timeline da avaliação baseada em eventos, não somente em comparação de estados.
 11. Após emissão, um laudo é imutável.
-11. Alterações posteriores exigem reabertura explícita e são auditadas.
-12. Versões de laudo preservam snapshots do conteúdo emitido.
-13. Identificadores públicos não enumeráveis.
-14. Preparação para jobs assíncronos sem microsserviços prematuros.
-15. Deploy reproduzível via Docker Compose.
+12. Alterações posteriores exigem reabertura explícita e são auditadas.
+13. Versões de laudo preservam snapshots da composição documental emitida.
+14. Identificadores públicos não enumeráveis.
+15. Preparação para jobs assíncronos sem microsserviços prematuros.
+16. Deploy reproduzível via Docker Compose.
 
 ## Perfis
 
@@ -163,7 +163,11 @@ Evaluation
           +-- PublicAccess
 ```
 
-O snapshot é a representação congelada do conteúdo utilizado para gerar aquela versão.
+O snapshot é a representação congelada da composição documental utilizada para gerar aquela versão. O Laudo é uma representação documental da Avaliação: combina informações registradas pelo técnico e outras informações relevantes e as organiza conforme o template e os padrões de apresentação do EMIT. O Snapshot preserva os dados e a composição necessários para reproduzir o documento, e não é um dump do banco.
+
+O Snapshot pode preservar, conforme aplicável, emissor, solicitante, equipamento, objetivo, local, técnico, campos e resultados, testes, observações, conclusão, evidências selecionadas, textos/rótulos, template/versão, identidade visual e metadados de emissão. Evidências que integram o documento devem ter referências de armazenamento imutáveis.
+
+A mesma ReportVersion pode ser apresentada por consulta digital pública ou como PDF destinado à impressão A4. A consulta pública é uma representação do laudo e não deve expor automaticamente todos os dados existentes na Avaliação ou no Snapshot; regras de publicação devem minimizar dados pessoais e sensíveis.
 
 O laudo não deve ser renderizado novamente a partir do estado atual da avaliação para consultas históricas. A consulta de uma versão deve utilizar seu snapshot.
 
