@@ -129,7 +129,9 @@ O MVP deve oferecer reprodução/visualização básica diretamente na aplicaç�
 - vídeos devem possuir controles nativos de reprodução;
 - arquivos incompatíveis com reprodução direta devem continuar disponíveis para consulta/download conforme o tipo e as permissões.
 
-A reprodução não precisa de um player avançado no MVP. O objetivo é permitir que o técnico visualize ou reproduza o conteúdo sem depender obrigatoriamente de uma ferramenta externa.
+Além do upload, o técnico poderá iniciar uma gravação de áudio ou vídeo diretamente na tela da avaliação. Após encerrar a gravação, poderá confirmar ou cancelar o material; ao confirmar, a mídia será armazenada e vinculada automaticamente à avaliação e ao contexto em que a gravação foi iniciada.
+
+A reprodução não precisa de um player avançado no MVP. O objetivo é permitir que o técnico visualize ou reproduza o conteúdo sem depender obrigatoriamente de uma ferramenta externa. A captura dependerá das permissões e capacidades do navegador; falhas de permissão ou suporte não devem impedir o restante da avaliação.
 
 Nem toda evidência precisa fazer parte do laudo. A inclusão no laudo é uma decisão de composição documental. Uma evidência pode permanecer apenas como material interno da avaliação.
 
