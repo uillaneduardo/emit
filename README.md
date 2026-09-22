@@ -112,6 +112,29 @@ O documento deve apresentar, conforme o contexto:
 O QR Code deve apontar para um identificador/token público não enumerável, e não carregar o conteúdo do laudo diretamente.
 
 ## Snapshot do laudo
+### Evidências e arquivos
+
+A avaliação deve aceitar evidências em pelo menos três mídias no MVP:
+
+- imagem;
+- áudio;
+- vídeo.
+
+A evidência é um registro técnico associado à avaliação e, quando aplicável, a uma seção, campo ou teste. O arquivo binário fica no storage S3-compatible/MinIO, enquanto os metadados ficam no PostgreSQL.
+
+O MVP deve oferecer reprodução/visualização básica diretamente na aplicação:
+
+- imagens devem possuir visualização;
+- áudios devem possuir controles nativos de reprodução;
+- vídeos devem possuir controles nativos de reprodução;
+- arquivos incompatíveis com reprodução direta devem continuar disponíveis para consulta/download conforme o tipo e as permissões.
+
+A reprodução não precisa de um player avançado no MVP. O objetivo é permitir que o técnico visualize ou reproduza o conteúdo sem depender obrigatoriamente de uma ferramenta externa.
+
+Nem toda evidência precisa fazer parte do laudo. A inclusão no laudo é uma decisão de composição documental. Uma evidência pode permanecer apenas como material interno da avaliação.
+
+Quando uma evidência for utilizada em uma versão emitida do laudo, o conteúdo utilizado deve ser preservado de forma imutável para que a versão histórica não dependa do arquivo atual da avaliação.
+
 
 Cada `ReportVersion` deve possuir um **Snapshot imutável** que represente a composição documental daquela versão.
 
